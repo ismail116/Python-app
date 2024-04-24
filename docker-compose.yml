@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  django:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.local
+    command: python manage.py runserver 0.0.0.0:8000
+
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=my-secret-pw
+      - MYSQL_DATABASE=database_name
+      - MYSQL_USER=database_username
+      - MYSQL_PASSWORD=database_password
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
